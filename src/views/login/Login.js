@@ -1,6 +1,7 @@
 import React from 'react'
 
-export default function Login() {
+export default function Login(props) {
+  console.log(props,4);
   return (
     <div>Login</div>
   )

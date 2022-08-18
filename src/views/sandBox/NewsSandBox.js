@@ -13,7 +13,7 @@ const { Content } = Layout
 export default function NewsSandBox() {
   return (
     <Layout>
-      <SideMenu className="Side-Menu"></SideMenu>
+      <SideMenu></SideMenu>
       <Layout className="site-layout">
         <TopHeader></TopHeader>
         <Content
