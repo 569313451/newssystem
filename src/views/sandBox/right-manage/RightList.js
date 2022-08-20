@@ -8,19 +8,21 @@ export default function RightList() {
   const [dataSource, setdataSource] = useState([])
   const FilterMenu = (menuList) => {
     return menuList.map(item => {
-      if (item.childrens?.length > 0) {
-        item.children = FilterMenu(item.childrens)
+      if (item.children?.length > 0) {
+        item.children = FilterMenu(item.children)
       }else{
         delete item.children
       }
       return item
     })
   }
-  useEffect(() => {
-    axios.get('http://localhost:8000/meunLists?_embed=childrens').then(res => {
-      console.log(res.data);
+  const getMenu=()=>{
+    axios.get('http://localhost:8000/menuLists?_embed=children').then(res => {
       setdataSource(FilterMenu(res.data))
     })
+  }
+  useEffect(() => {
+    getMenu()
   }, [])
 
   const delectMethod=(item)=>{
@@ -28,12 +30,12 @@ export default function RightList() {
     // 当前页面同步 后端删除数据
     if (item.grade===1) {
       setdataSource(dataSource.filter(data=>data.id!==item.id))
-      axios.delete(`http://localhost:8000/meunLists/${item.id}`)
+      axios.delete(`http://localhost:8000/menuLists/${item.id}`)
     }else{
-      let arr= dataSource.filter(data=>data.id===item.meunListId)
+      let arr= dataSource.filter(data=>data.id===item.menuListId)
       arr[0].children=arr[0].children.filter(data=>data.id!==item.id)
       setdataSource([...dataSource])
-      axios.delete(`http://localhost:8000/childrens/${item.id}`)
+      axios.delete(`http://localhost:8000/children/${item.id}`)
     }
   }
   const confirmMethod=(item)=>{

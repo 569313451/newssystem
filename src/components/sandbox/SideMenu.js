@@ -25,7 +25,7 @@ function SideMenu() {
   let navigate = useNavigate();
   const location = useLocation()
   useEffect(() => {
-    axios.get('http://localhost:8000/meunLists?_embed=childrens').then(res => {
+    axios.get('http://localhost:8000/menuLists?_embed=children').then(res => {
       // eslint-disable-next-line no-use-before-define
       let ResData = renderMenu(res.data)
       setMenu(ResData)
@@ -40,7 +40,7 @@ function SideMenu() {
           key:item.key,
           label: item.label,
           icon:iconList[item.key],
-          children:item.childrens
+          children:item.children
         }
         if (item.children?.length > 0) {
           item.children = renderMenu(item.children)
