@@ -3,7 +3,7 @@ import { Layout, Menu } from 'antd';
 import './index.css'
 import { withRouter } from '../../utils/withRouter'
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
 import {
   ChromeOutlined,
   UserOutlined,
@@ -18,17 +18,17 @@ const iconList = {
   '/user-manage/list': <AlignCenterOutlined />,
   '/right-manage': <UserOutlined />,
   '/right-manage/role/list': <UserOutlined />,
-  '/right-manage/right/list': <UserOutlined />,
+  '/right-manage/right/list': <UserOutlined />
 }
-function SideMenu(props) {
+function SideMenu() {
   let [menu, setMenu] = useState([])
   let navigate = useNavigate();
   const location = useLocation()
   useEffect(() => {
     axios.get('http://localhost:8000/meunLists').then(res => {
+      // eslint-disable-next-line no-use-before-define
       setMenu(renderMenu(res.data))
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const renderMenu = (menuList) => {
     return menuList.map(item => {
@@ -45,19 +45,20 @@ function SideMenu(props) {
     })
   }
   const SelectedKeys = [location.pathname]
-  const OpenKeys = ["/" + location.pathname.split("/")[1]]
+  const OpenKeys = ['/' + location.pathname.split('/')[1]]
   return (
     <div>
-      <Sider trigger={null} collapsible collapsed={false}>
-        <div style={{ display: "flex", height: '100%', flexDirection: "column" }}>
+      <Sider collapsed={false} collapsible trigger={null}>
+        <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
           <div className="logo" >发布管理</div>
           <div style={{ flex: 1, overflow: 'auto' }}>
-            <Menu theme='dark' mode='inline' items={menu}
-              defaultOpenKeys={OpenKeys}
-              selectedKeys={SelectedKeys}
+            <Menu defaultOpenKeys={OpenKeys} items={menu} mode="inline"
               onClick={(item) => {
                 navigate(item.key)
-              }} />
+              }}
+              selectedKeys={SelectedKeys}
+              theme="dark"
+            />
           </div>
         </div>
       </Sider >

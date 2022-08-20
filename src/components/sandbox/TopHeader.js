@@ -17,16 +17,16 @@ export default function TopHeader() {
         {
           key: '1',
           label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+            <a href="https://www.antgroup.com" rel="noopener noreferrer" target="_blank">
               admin
             </a>
-          ),
+          )
         },
         {
           key: '4',
           danger: true,
-          label: '退出',
-        },
+          label: '退出'
+        }
       ]}
     />
   );
@@ -34,7 +34,7 @@ export default function TopHeader() {
     <Header
       className="site-layout-background"
       style={{
-        padding: '0 16px',
+        padding: '0 16px'
       }}
     >
       {collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed} /> : <MenuFoldOutlined onClick={changeCollapsed} />}
@@ -42,7 +42,7 @@ export default function TopHeader() {
         <span style={{ margin: '0 10px' }}>欢迎admin回来</span>
         <Dropdown overlay={menu}>
           <Space>
-            <Avatar size={32} icon={<UserOutlined />} />
+            <Avatar icon={<UserOutlined />} size={32} />
             <DownOutlined />
           </Space>
         </Dropdown>

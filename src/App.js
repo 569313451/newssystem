@@ -1,7 +1,8 @@
+/* eslint-disable react/react-in-jsx-scope */
 import './App.css'
 import IndexRouter from './router/IndexRouter'
 
-function App(params) {
+function App() {
   return <div>
     <IndexRouter></IndexRouter>
   </div>

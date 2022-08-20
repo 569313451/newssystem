@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import SideMenu from "../../components/sandbox/SideMenu"
-import TopHeader from "../../components/sandbox/TopHeader"
+import SideMenu from '../../components/sandbox/SideMenu'
+import TopHeader from '../../components/sandbox/TopHeader'
 import Home from './home/Home'
 import RightList from './right-manage/RightList'
 import RoleList from './right-manage/RoleList'
@@ -22,15 +22,16 @@ export default function NewsSandBox() {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
+            overflow:'auto'
           }}
         >
           <Routes>
-            <Route path='/home' element={<Home />} />
-            <Route path='/user-manage/list' element={<UserList />} />
-            <Route path='/right-manage/role/list' element={<RoleList />} />
-            <Route path='/right-manage/right/list' element={<RightList />} />
-            <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="*" element={<NoPermission />} />
+            <Route element={<Home />} path="/home" />
+            <Route element={<UserList />} path="/user-manage/list" />
+            <Route element={<RoleList />} path="/right-manage/role/list" />
+            <Route element={<RightList />} path="/right-manage/right/list" />
+            <Route element={<Navigate to="/home" />} path="/" />
+            <Route element={<NoPermission />} path="*" />
           </Routes>
         </Content>
       </Layout>

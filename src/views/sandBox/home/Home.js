@@ -33,7 +33,7 @@ export default function Home() {
   }
   return (
     <div>
-      <Button type='primary' onClick={ajax}>Button</Button>
+      <Button onClick={ajax} type="primary">Button</Button>
     </div>
   )
 }
