@@ -25,17 +25,27 @@ function SideMenu() {
   let navigate = useNavigate();
   const location = useLocation()
   useEffect(() => {
-    axios.get('http://localhost:8000/meunLists').then(res => {
+    axios.get('http://localhost:8000/meunLists?_embed=childrens').then(res => {
       // eslint-disable-next-line no-use-before-define
-      setMenu(renderMenu(res.data))
+      let ResData = renderMenu(res.data)
+      setMenu(ResData)
     })
   }, [])
   const renderMenu = (menuList) => {
     return menuList.map(item => {
       if (item.pagepermisson === 1) {
-        item.icon = iconList[item.key]
+        // 未使用的属性报错???==>过滤属性
+        item={
+          id:item.id,
+          key:item.key,
+          label: item.label,
+          icon:iconList[item.key],
+          children:item.childrens
+        }
         if (item.children?.length > 0) {
           item.children = renderMenu(item.children)
+        }else{
+          delete item.children
         }
         return item
       } else {
