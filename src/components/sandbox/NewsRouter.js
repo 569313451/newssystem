@@ -28,8 +28,8 @@ const LocalRouterMap= {
   '/publish-manage/published':<Published/>,
   '/publish-manage/sunset':<Sunset/>
 }
+
 export default function NewsRouter() {
-  // eslint-disable-next-line no-unused-vars
   const [BackRouteList,setBackRouteList]=useState([])
   useEffect(()=>{
     Promise.all([
@@ -40,11 +40,23 @@ export default function NewsRouter() {
       console.log([...res[0].data,...res[1].data],41);
     })
   },[])
+
+  const  checkRoute=()=>{
+    return true
+  }
+  const checkUserPermission=()=>{
+    return true
+  }
+
   return (
     <Routes>
       {
         BackRouteList.map(item=>{
-          return  <Route element={LocalRouterMap[item.key]} exact key={item.key} path={item.key}></Route>
+          if(checkRoute()&&checkUserPermission()){
+            return <Route element={LocalRouterMap[item.key]} exact key={item.key} path={item.key}></Route>
+          }else{
+            return <Route element={<NoPermission />} path="*" />
+          }
         })
       }
       <Route element={<Navigate to="/home" />} path="/" />
