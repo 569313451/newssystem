@@ -11,7 +11,7 @@ export default function NewsSandBox() {
       <SideMenu></SideMenu>
       <Layout className="site-layout">
         <TopHeader></TopHeader>
-        <Content className="site-layout-background">
+        <Content className="site-layout-background mainContent">
           <NewsRouter></NewsRouter>
         </Content>
       </Layout>

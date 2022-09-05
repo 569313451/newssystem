@@ -19,9 +19,13 @@
 .site-layout .site-layout-background {
   background: #fff;
   margin: '24px 16px';
-  padding: 24;
   min-height: 280;
   overflow: 'auto';
+}
+
+.site-layout .mainContent {
+  padding: 24px;
+  margin: 20px;
 }
 
 #root,
