@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Table, Tag, Button,Modal,Popover,Switch } from 'antd'
 import { EditOutlined ,DeleteOutlined,ExclamationCircleOutlined} from '@ant-design/icons';
 import axios from 'axios'
-const {confirm} =Modal
+const {confirm} = Modal
 export default function RightList() {
   const [dataSource, setdataSource] = useState([])
   const FilterMenu = (menuList) => {

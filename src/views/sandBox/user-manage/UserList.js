@@ -1,15 +1,21 @@
-import React,{ useEffect, useState } from 'react'
-import { Table ,Switch,Button, Form, Input, Modal,Select} from 'antd'
+import React,{ useEffect, useState,useRef } from 'react'
+import { Table ,Switch,Button, Modal} from 'antd'
 import axios from 'axios'
-import {UnorderedListOutlined,DeleteOutlined} from '@ant-design/icons'
+import {UnorderedListOutlined,DeleteOutlined,ExclamationCircleOutlined} from '@ant-design/icons'
+import UserForm from '../../../components/user-manage/userForm'
 
 export default function UserList() {
   const [dataSource,setdataSource] = useState([])
   const [roleList, setroleList] = useState([])
   const [regionList, setregionList] = useState([])
   const [open, setOpen] = useState(false);
-  const [form] = Form.useForm();
-  const { Option } = Select;
+  const addForm = useRef(null)
+  const {confirm} = Modal
+  useEffect(()=>{
+    axios.get('http://localhost:8000/regions').then(res=>{
+      setregionList(res.data)
+    })
+  },[])
   useEffect(()=>{
     // 用户列表
     axios.get('http://localhost:8000/users?_expand=role').then(res=>{
@@ -17,23 +23,47 @@ export default function UserList() {
     })
   },[])
   useEffect(()=>{
-    axios.get('http://localhost:8000/regions').then(res=>{
-      setregionList(res.data)
-      console.log(regionList);
-    })
-  },[])
-  useEffect(()=>{
     axios.get('http://localhost:8000/roles').then(res=>{
       setroleList(res.data)
-      console.log(roleList);
     })
   },[])
+  const addformOK= ()=> {
+    addForm.current.validateFields().then(res=>{
+      setOpen(false)
+      axios.post('http://localhost:8000/users',{
+        ...res,
+        'roleState':true,
+        'default':false
+      }).then(list=>{
+        addForm.current.resetFields()
+        setdataSource([...dataSource,{...list.data,role:roleList.filter(item=>item.id==list.data.roleId)[0]}])
+      })
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+  const deleteMethod=(row)=>{
+    confirm({
+      title:'你确定要删除?',
+      cancelText:'取消',
+      okText:'确定',
+      icon:<ExclamationCircleOutlined />,
+      onOk(){
+        axios.delete(`http://localhost:8000/users/${row.id}`).then(()=>{
+          setdataSource(dataSource.filter(item=>item.id!=row.id))
+        })
+      },
+      onCancel(){
+        console.log('Cancel');
+      }
+    })
+  }
   const columns = [
     {
       title: '区域',
-      dataIndex: 'regin',
-      render:regin=>{
-        return <b>{regin||'全球'}</b>
+      dataIndex: 'region',
+      render:region=> {
+        return <b>{region||'全球'}</b>
       }
     },
     {
@@ -58,7 +88,7 @@ export default function UserList() {
       render: (item) => {
         return <div>
           <Button
-            danger icon={<DeleteOutlined />} onClick={()=>{console.log(item);}} shape="circle"
+            danger icon={<DeleteOutlined />} onClick={()=>deleteMethod(item)} shape="circle"
           />
           <Button
             icon={<UnorderedListOutlined />} onClick={()=>{}}
@@ -69,72 +99,19 @@ export default function UserList() {
       }
     }
   ];
-  // const onCreate = (values) => {
-  //   console.log('Received values of form: ', values);
-  //   setOpen(false);
-  // };
   return (
     <div>
       <Button onClick={()=>{setOpen(true);}} type="primary">添加用户</Button>
-      <Table columns={columns} dataSource={dataSource} rowKey={item=>item.id}></Table>
+      <Table columns={columns} dataSource={dataSource} pagination={{pageSize:5}} rowKey={item=>item.id}></Table>
       <Modal
-        cancelText="Cancel"
-        okText="Create"
+        cancelText="取消"
+        okText="确定"
         onCancel={() => {setOpen(false)}}
-        onOk={() => {console.log('add')}}
+        onOk={()=>addformOK()}
         title="添加用户"
         visible={open}
       >
-        <Form form={form} {...{labelCol: { span: 4 },wrapperCol: { span: 20 }}}>
-          <Form.Item
-            label="用户名"
-            name="username"
-            rules={[{required: true,message: '用户名必填'}]}
-          >
-            <Input placeholder="请填写用户名"/>
-          </Form.Item>
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{required: true,message: '密码必填'}]}
-          >
-            <Input placeholder="请填写密码" type="password"/>
-          </Form.Item>
-          <Form.Item
-            label="区域"
-            name="region"
-            rules={[{required: true,message: '区域必填'}]}
-          >
-            <Select
-              allowClear
-              onChange={(item)=>{console.log(item);}}
-              placeholder="请选择区域范围"
-            >
-              {
-                regionList.map(item=>{
-                  return <Option key={item.id} value={item.vaule}>{item.title}</Option>
-                })
-              }
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="角色"
-            name="roleId"
-            rules={[{required: true,message: '角色必填'}]}
-          >
-            <Select
-              allowClear
-              onChange={(item)=>{console.log(item);}}
-              placeholder="请选择角色"
-            >
-              {
-                roleList.map(item=>{
-                  return <Option key={item.id} value={item.id}>{item.label}</Option>
-                })
-              }
-            </Select>
-          </Form.Item>
-        </Form>
+        <UserForm ref={addForm} regionList={regionList} roleList={roleList}></UserForm>
       </Modal>
     </div>
   )
