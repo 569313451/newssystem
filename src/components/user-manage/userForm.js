@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useState,forwardRef } from 'react';
+import React, { useState,forwardRef,useEffect } from 'react';
 import { Form, Input, Select } from 'antd';
 
 const userForm= forwardRef((props,ref)=> {
   const [form] = Form.useForm();
   const { Option } = Select;
   const [isDisabled, setisDisabled] = useState(false)
+  useEffect(() => {
+    setisDisabled(props.isUpdateDisabled)
+  }, [props.isUpdateDisabled])
+
   // const onCreate = (values) => {
   //   console.log('Received values of form: ', values);
   //   setOpen(false);
