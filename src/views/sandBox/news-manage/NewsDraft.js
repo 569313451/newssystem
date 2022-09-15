@@ -23,7 +23,6 @@ export default function NewsDraft() {
   return (
     <div>
       <Table columns={columns} dataSource={dataSource} rowKey={(item)=>item.id}></Table>
-
     </div>
   )
 }
