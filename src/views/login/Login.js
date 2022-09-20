@@ -1,11 +1,28 @@
 import React from 'react'
 import style from './Login.module.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-export default function Login(props) {
-  console.log(props, 4);
-  const onFinish = () => {
+import { Button, Form, Input, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+export default function Login() {
+  const navigate = useNavigate();
 
+  const onFinish = (e) => {
+    console.log(e, 8);
+    axios.get('http://localhost:8000/users?username='
+      + e.username
+      + '&password='
+      + e.password
+      + '&roleState=true&_expand=role')
+      .then(res => {
+        console.log(res.data, 10);
+        if (res.data.length === 0) {
+          message.error('用户名或密码不匹配！')
+        } else {
+          localStorage.setItem('token', JSON.stringify(res.data[0]))
+          navigate('/')
+        }
+      })
   }
   return (
     <div >

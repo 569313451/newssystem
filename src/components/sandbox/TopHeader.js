@@ -19,7 +19,6 @@ function TopHeader() {
   };
   const onClickMenu = (e) => {
     if (e.key === '4') {
-      console.log('退出');
       localStorage.removeItem('token')
       navigate('/login')
     }
