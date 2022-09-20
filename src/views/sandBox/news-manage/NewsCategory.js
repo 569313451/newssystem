@@ -51,7 +51,7 @@ export default function NewsCategory() {
       onOk() {
         axios.delete('http://localhost:8000/categorys/' + row.id).then(() => {
           message.success('删除成功')
-          setcategoryList([...categoryList.filter(item => item.id != row.id)])
+          setcategoryList(categoryList.filter(item => item.id != row.id))
         })
       },
       onCancel() {
