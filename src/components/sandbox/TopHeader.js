@@ -23,19 +23,12 @@ function TopHeader() {
       navigate('/login')
     }
   }
+  const { username, role: { label } } = JSON.parse(localStorage.getItem('token'))
   const menu = (
     <Menu items={[
       {
         key: '1',
-        label: (
-          <a
-            href="https://www.antgroup.com"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            admin
-          </a>
-        )
+        label: <a href="https://www.antgroup.com" rel="noopener noreferrer" target="_blank">{label}</a>
       },
       {
         key: '4',
@@ -58,7 +51,7 @@ function TopHeader() {
         <MenuFoldOutlined onClick={changeCollapsed} />
       )}
       <div style={{ float: 'right' }}>
-        <span style={{ margin: '0 10px' }}>欢迎admin回来</span>
+        <span style={{ margin: '0 10px' }}>欢迎{username}回来</span>
         <Dropdown overlay={menu}>
           <Space>
             <Avatar icon={<UserOutlined />} size={32} />

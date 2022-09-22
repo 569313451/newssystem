@@ -31,20 +31,24 @@ function SideMenu() {
       setMenu(ResData)
     })
   }, [])
+  const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
+  const checkPagePermission = (item) => {
+    return rights.includes(item.key)
+  }
   const renderMenu = (menuList) => {
-    return menuList.map(item => {
-      if (item.pagepermisson === 1) {
+    let arr = menuList.map(item => {
+      if (item.pagepermisson === 1 && checkPagePermission(item)) {
         // 未使用的属性报错???==>过滤属性
-        item={
-          id:item.id,
-          key:item.key,
+        item = {
+          id: item.id,
+          key: item.key,
           label: item.label,
-          icon:iconList[item.key],
-          children:item.children
+          icon: iconList[item.key],
+          children: item.children
         }
-        if (item.children?.length > 0) {
+        if (item.children?.length > 0 && checkPagePermission(item)) {
           item.children = renderMenu(item.children)
-        }else{
+        } else {
           delete item.children
         }
         return item
@@ -53,6 +57,8 @@ function SideMenu() {
         return
       }
     })
+    console.log(arr, 60);
+    return arr
   }
   const SelectedKeys = [location.pathname]
   const OpenKeys = ['/' + location.pathname.split('/')[1]]
