@@ -14,47 +14,52 @@ import Unpublished from '../../views/sandBox/publish-manage/Unpublished'
 import Published from '../../views/sandBox/publish-manage/Published'
 import Sunset from '../../views/sandBox/publish-manage/Sunset'
 import axios from 'axios'
-const LocalRouterMap= {
-  '/home':<Home/>,
-  '/user-manage/list':<UserList/>,
-  '/right-manage/role/list':<RoleList/>,
-  '/right-manage/right/list':<RightList/>,
-  '/news-manage/add':<NewsAdd/>,
-  '/news-manage/draft':<NewsDraft/>,
-  '/news-manage/category':<NewsCategory/>,
-  '/audit-manage/audit':<Audit/>,
-  '/audit-manage/list':<AuditList/>,
-  '/publish-manage/unpublished':<Unpublished/>,
-  '/publish-manage/published':<Published/>,
-  '/publish-manage/sunset':<Sunset/>
+const LocalRouterMap = {
+  '/home': <Home />,
+  '/user-manage/list': <UserList />,
+  '/right-manage/role/list': <RoleList />,
+  '/right-manage/right/list': <RightList />,
+  '/news-manage/add': <NewsAdd />,
+  '/news-manage/draft': <NewsDraft />,
+  '/news-manage/category': <NewsCategory />,
+  '/audit-manage/audit': <Audit />,
+  '/audit-manage/list': <AuditList />,
+  '/publish-manage/unpublished': <Unpublished />,
+  '/publish-manage/published': <Published />,
+  '/publish-manage/sunset': <Sunset />
 }
 
 export default function NewsRouter() {
-  const [BackRouteList,setBackRouteList]=useState([])
-  useEffect(()=>{
+  const [BackRouteList, setBackRouteList] = useState([])
+
+  const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
+
+  const checkRoute = (item) => {
+    // console.log(item,rights);
+    // return true
+    return rights.includes(item.key) && item.pagepermisson
+  }
+
+  const checkUserPermission = () => {
+    return true
+  }
+
+  useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8000/menuLists'),
       axios.get('http://localhost:8000/children')
-    ]).then(res=>{
-      setBackRouteList([...res[0].data,...res[1].data])
+    ]).then(res => {
+      setBackRouteList([...res[0].data, ...res[1].data])
     })
-  },[])
-
-  const  checkRoute=()=>{
-    return true
-  }
-  const checkUserPermission=()=>{
-    return true
-  }
-
+  }, [])
   return (
     <Routes>
       {
-        BackRouteList.map(item=>{
-          if(checkRoute()&&checkUserPermission()){
+        BackRouteList.map(item => {
+          if (checkRoute(item) && checkUserPermission()) {
             return <Route element={LocalRouterMap[item.key]} exact key={item.key} path={item.key}></Route>
-          }else{
-            return <Route element={<NoPermission />} path="*" />
+          } else {
+            return null
           }
         })
       }

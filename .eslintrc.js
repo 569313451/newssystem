@@ -38,7 +38,7 @@ module.exports = {
     'no-dupe-keys': 2, //在创建对象字面量时不允许键重复
     'no-duplicate-case': 2, //switch中的case标签不能重复
     'no-dupe-args': 2, //函数参数不能重复
-    'no-empty': 2, //块语句中的内容不能为空
+    // 'no-empty': 2, //块语句中的内容不能为空
     'no-func-assign': 2, //禁止重复的函数声明
     'no-invalid-this': 0, //禁止无效的this，只能用在构造器，类，对象字面量
     'no-redeclare': 2, //禁止重复声明变量
