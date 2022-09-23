@@ -5,9 +5,9 @@ import { withRouter } from '../../utils/withRouter'
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
-  ChromeOutlined,
-  UserOutlined,
-  AlignCenterOutlined
+  ChromeOutlined, AuditOutlined, DeleteOutlined, CloudUploadOutlined,
+  UserOutlined, OrderedListOutlined, CloudSyncOutlined, CheckSquareOutlined,
+  AlignCenterOutlined, PartitionOutlined, EditOutlined, SnippetsOutlined, DiffOutlined
 } from '@ant-design/icons';
 const { Sider } = Layout;
 
@@ -16,9 +16,20 @@ const iconList = {
   '/home': <ChromeOutlined />,
   '/user-manage': <UserOutlined />,
   '/user-manage/list': <AlignCenterOutlined />,
-  '/right-manage': <UserOutlined />,
-  '/right-manage/role/list': <UserOutlined />,
-  '/right-manage/right/list': <UserOutlined />
+  '/right-manage': <PartitionOutlined />,
+  '/right-manage/role/list': <AlignCenterOutlined />,
+  '/right-manage/right/list': <AlignCenterOutlined />,
+  '/news-manage': <CheckSquareOutlined />,
+  '/news-manage/add': <EditOutlined />,
+  '/news-manage/draft': <SnippetsOutlined />,
+  '/news-manage/category': <OrderedListOutlined />,
+  '/audit-manage': <AuditOutlined />,
+  '/audit-manage/audit': <AlignCenterOutlined />,
+  '/audit-manage/list': <AlignCenterOutlined />,
+  '/publish-manage': <DiffOutlined />,
+  '/publish-manage/unpublished': <CloudSyncOutlined />,
+  '/publish-manage/published': <CloudUploadOutlined />,
+  '/publish-manage/sunset': <DeleteOutlined />
 }
 function SideMenu() {
   let [menu, setMenu] = useState([])
