@@ -5,9 +5,10 @@ import IndexRouter from './router/IndexRouter'
 import { ConfigProvider } from 'antd'
 function App() {
   // const localeList = []
-  return <ConfigProvider locale={zhCN}>
-    <IndexRouter></IndexRouter>
-  </ConfigProvider>
-
+  return (
+    <ConfigProvider locale={zhCN}>
+      <IndexRouter></IndexRouter>
+    </ConfigProvider>
+  )
 }
 export default App

@@ -63,7 +63,7 @@ export default function NewsRouter() {
           }
         })
       }
-      <Route element={<Navigate to="/home" />} path="/" />
+      <Route element={<Navigate to="/login" />} path="/" />
       <Route element={<NoPermission />} path="*" />
     </Routes>
   )
