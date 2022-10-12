@@ -31,19 +31,13 @@ const LocalRouterMap = {
 
 export default function NewsRouter() {
   const [BackRouteList, setBackRouteList] = useState([])
-
   const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
-
   const checkRoute = (item) => {
-    // console.log(item,rights);
-    // return true
-    return rights.includes(item.key) && item.pagepermisson
+    return LocalRouterMap[item.key] && item.pagepermisson
   }
-
-  const checkUserPermission = () => {
-    return true
+  const checkUserPermission = (item) => {
+    return rights.includes(item.key)
   }
-
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8000/menuLists'),
@@ -56,7 +50,7 @@ export default function NewsRouter() {
     <Routes>
       {
         BackRouteList.map(item => {
-          if (checkRoute(item) && checkUserPermission()) {
+          if (checkRoute(item) && checkUserPermission(item)) {
             return <Route element={LocalRouterMap[item.key]} exact key={item.key} path={item.key}></Route>
           } else {
             return null
@@ -64,7 +58,9 @@ export default function NewsRouter() {
         })
       }
       <Route element={<Navigate to="/login" />} path="/" />
-      <Route element={<NoPermission />} path="*" />
+      {
+        BackRouteList.length > 0 && <Route element={<NoPermission />} path="*" />
+      }
     </Routes>
   )
 }

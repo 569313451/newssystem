@@ -68,7 +68,6 @@ function SideMenu() {
         return
       }
     })
-    console.log(arr, 60);
     return arr
   }
   const SelectedKeys = [location.pathname]

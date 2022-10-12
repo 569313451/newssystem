@@ -294,6 +294,20 @@
       "star": 0,
       "view": 0,
       "id": 11
+    },
+    {
+      "title": "测试草稿箱啊",
+      "categoryId": 5,
+      "content": "<p>测试草稿想</p>\n",
+      "region": "",
+      "author": "admin",
+      "roleId": 1,
+      "auditState": 0,
+      "publishState": 1,
+      "createTime": 1665556612027,
+      "star": 0,
+      "view": 0,
+      "id": 12
     }
   ],
   "users": [
