@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Button, Modal, message } from 'antd'
-import { DeleteOutlined, UploadOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined, CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 export default function AuditList() {
   const [dataSource, setdataSource] = useState([])
@@ -78,10 +78,13 @@ export default function AuditList() {
       render: (item) => {
         return <div>
           <Button
-            danger icon={<DeleteOutlined />} onClick={() => { delMethod(item) }} shape="circle"
+            danger icon={<CloseCircleOutlined />}
+            onClick={() => { delMethod(item) }}
+            shape="circle"
           />
           <Button
-            icon={<UploadOutlined />} onClick={() => { editMethod(item) }}
+            icon={<CheckCircleOutlined />}
+            onClick={() => { editMethod(item) }}
             shape="circle" style={{ marginLeft: '10px' }}
             type="primary"
           />

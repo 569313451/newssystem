@@ -19,7 +19,7 @@ module.exports = {
   ],
   'rules': {
     'indent': ['error', 2],//强制缩进
-    'quotes': [2, 'single'], //单引号
+    // 'quotes': [2, 'single'], //单引号
     'no-console': 0, //不禁用console
     'no-debugger': 2, //禁用debugger
     'no-var': 0, //对var警告
@@ -78,7 +78,7 @@ module.exports = {
     'react/no-deprecated': 1, //不使用弃用的方法
     'react/jsx-equals-spacing': 2, //在JSX属性中强制或禁止等号周围的空格
     'no-unreachable': 1, //不能有无法执行的代码
-    'comma-dangle': 2, //对象字面量项尾不能有逗号
+    // 'comma-dangle': 2, //对象字面量项尾不能有逗号
     'no-mixed-spaces-and-tabs': 0, //禁止混用tab和空格
     'prefer-arrow-callback': 0, //比较喜欢箭头回调
     'arrow-parens': 0, //箭头函数用小括号括起来
