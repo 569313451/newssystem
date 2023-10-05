@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { Table, Tag, Button, Modal, Popover, Switch } from 'antd'
-import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios'
 const { confirm } = Modal
 export default function RightList() {
@@ -24,7 +24,9 @@ export default function RightList() {
   useEffect(() => {
     getMenu()
   }, [])
-
+  const addMethod = item => {
+    console.log(item, 28);
+  };
   const delectMethod = async (item) => {
     console.log(item, 29);
     await axios.delete(`http://localhost:8000/menuLists/${item.id}`)
@@ -86,22 +88,14 @@ export default function RightList() {
       // eslint-disable-next-line react/no-multi-comp
       render: (item) => {
         return <div>
+          <Button icon={<PlusOutlined />} onClick={() => { addMethod(item) }} shape="circle" style={{ marginRight: '10px' }} />
           <Popover
-            content={<div style={{ textAlign: 'center' }}>
-              <Switch checked={item.pagepermisson} onChange={() => changeSwitch(item)}></Switch>
-            </div>}
-            title="页面配置项"
-            trigger={item.pagepermisson == undefined ? '' : 'click'}
+            content={<div style={{ textAlign: 'center' }}> <Switch checked={item.pagepermisson} onChange={() => changeSwitch(item)}></Switch> </div>}
+            title="页面配置项" trigger={item.pagepermisson == undefined ? '' : 'click'}
           >
-            <Button disabled={item.pagepermisson == undefined} icon={<EditOutlined />} shape="circle" type="primary" />
+            <Button disabled={item.pagepermisson == undefined} icon={<EditOutlined />} shape="circle" />
           </Popover>
-          <Button
-            icon={<DeleteOutlined />}
-            onClick={() => { confirmMethod(item) }}
-            shape="circle"
-            style={{ marginLeft: '10px' }}
-            type="primary"
-          />
+          <Button icon={<DeleteOutlined />} onClick={() => { confirmMethod(item) }} shape="circle" style={{ marginLeft: '10px' }} />
         </div>
       }
     }

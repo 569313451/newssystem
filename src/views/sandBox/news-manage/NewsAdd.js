@@ -63,7 +63,6 @@ export default function NewsAdd() {
     <div>
       <PageHeader
         className="site-page-header"
-        subTitle="This is a subtitle"
         title="撰写新闻"
       />
       <Steps current={current}>

@@ -216,8 +216,28 @@
         "/news-manage/draft",
         "/home",
         "/publish-manage/unpublished",
-        "/publish-manage"
+        "/publish-manage",
+        "/user-manage",
+        "/news-manage/category",
+        "/audit-manage",
+        "/publish-manage/published",
+        "/publish-manage/sunset"
       ]
+    },
+    {
+      "label": "测试角色",
+      "rights": [
+        "/home",
+        "/right-manage",
+        "/user-manage/delete",
+        "/user-manage/update",
+        "/user-manage/add",
+        "/user-manage/list",
+        "/user-manage",
+        "/right-manage/role/list",
+        "/right-manage/right/list"
+      ],
+      "id": 4
     }
   ],
   "categorys": [
@@ -260,7 +280,7 @@
       "region": "",
       "author": "admin",
       "roleId": 1,
-      "auditState": 0,
+      "auditState": 1,
       "publishState": 1,
       "createTime": 1662342034190,
       "star": 0,
