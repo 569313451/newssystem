@@ -1,60 +1,61 @@
 import React, { useEffect, useState } from 'react'
-import { Table,Button,Modal,Tree,message } from 'antd'
+import { Table, Button, Modal, Tree, message } from 'antd'
 import axios from 'axios'
-import {UnorderedListOutlined,DeleteOutlined,ExclamationCircleOutlined} from '@ant-design/icons'
-const {confirm} =Modal
+import { UnorderedListOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+const { confirm } = Modal;
 export default function RoleList() {
-  const [dataSource,setdataSource] = useState([])
+  const [dataSource, setdataSource] = useState([])
   const [treeData, setTreeData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [checkedKeys, setCheckedKeys] = useState([])
   const [currentId, setCurrentId] = useState(0)
-  useEffect(()=>{
-    axios.get('http://localhost:8000/roles').then(res=>{
+  useEffect(() => {
+    axios.get('http://localhost:8000/roles').then(res => {
       setdataSource(res.data)
     })
-    axios.get('http://localhost:8000/menuLists?_embed=children').then(res=>{
+    axios.get('http://localhost:8000/menuLists?_embed=children').then(res => {
       setTreeData(res.data)
     })
-  },[])
-  const delectMethod=(item)=>{
+  }, [])
+  const delectMethod = (item) => {
     console.log(item);
     // 当前页面同步 后端删除数据
-    setdataSource(dataSource.filter(data=>data.id!==item.id))
+    setdataSource(dataSource.filter(data => data.id !== item.id))
     axios.delete(`http://localhost:8000/roles/${item.id}`)
   }
-  const confirmMethod=item=>{
+  const confirmMethod = item => {
     confirm({
-      title:'你确定要删除?',
-      icon:<ExclamationCircleOutlined />,
-      onOk(){
+      title: '你确定要删除?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
         console.log('ok');
         delectMethod(item)
       },
-      onCancel(){
+      onCancel() {
         console.log('Cancel');
       }
     })
-    console.log(item,15);
+    console.log(item, 15);
   }
-  const editMethod=item=>{
+  const editMethod = item => {
     setCheckedKeys(item.rights)
     setCurrentId(item.id)
     setIsModalOpen(true);
   }
-  const handleOk=()=>{
+  const handleOk = () => {
     // 更新页面
-    let arr=dataSource.map(item=>{
-      if (item.id===currentId) {
-        return {...item,
-          rights:checkedKeys
+    let arr = dataSource.map(item => {
+      if (item.id === currentId) {
+        return {
+          ...item,
+          rights: checkedKeys
         }
       }
       return item
     })
     // 修改后端数据
-    axios.patch(`http://localhost:8000/roles/${currentId}`,{rights:checkedKeys}).then(res=>{
-      if (res.status==200) {
+    axios.patch(`http://localhost:8000/roles/${currentId}`, { rights: checkedKeys }).then(res => {
+      if (res.status == 200) {
         message.success('修改成功')
       }
     })
@@ -68,7 +69,7 @@ export default function RoleList() {
     {
       title: 'ID',
       dataIndex: 'id',
-      render:id=>{
+      render: id => {
         return <b>{id}</b>
       }
     },
@@ -81,11 +82,11 @@ export default function RoleList() {
       render: (item) => {
         return <div>
           <Button
-            danger icon={<DeleteOutlined />} onClick={()=>{confirmMethod(item)}} shape="circle"
+            danger icon={<DeleteOutlined />} onClick={() => { confirmMethod(item) }} shape="circle"
           />
           <Button
-            icon={<UnorderedListOutlined />} onClick={()=>{editMethod(item)}}
-            shape="circle" style={{marginLeft:'10px'}}
+            icon={<UnorderedListOutlined />} onClick={() => { editMethod(item) }}
+            shape="circle" style={{ marginLeft: '10px' }}
             type="primary"
           />
         </div>
@@ -100,13 +101,13 @@ export default function RoleList() {
   };
   return (
     <div>
-      <Table columns={columns} dataSource={dataSource} rowKey={item=>item.id}></Table>
+      <Table columns={columns} dataSource={dataSource} rowKey={item => item.id}></Table>
       <Modal onCancel={handleCancel} onOk={handleOk} title="权限分配" visible={isModalOpen}>
         <Tree
           checkStrictly
           checkable
           checkedKeys={checkedKeys}
-          fieldNames={{title:'label'}}
+          fieldNames={{ title: 'label' }}
           onCheck={onCheck}
           onSelect={onSelect}
           treeData={treeData}

@@ -1,22 +1,22 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Table, Tag, Button,Modal,Popover,Switch } from 'antd'
-import { EditOutlined ,DeleteOutlined,ExclamationCircleOutlined} from '@ant-design/icons';
+import { Table, Tag, Button, Modal, Popover, Switch } from 'antd'
+import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios'
-const {confirm} = Modal
+const { confirm } = Modal
 export default function RightList() {
   const [dataSource, setdataSource] = useState([])
   const FilterMenu = (menuList) => {
     return menuList.map(item => {
       if (item.children?.length > 0) {
         item.children = FilterMenu(item.children)
-      }else{
+      } else {
         delete item.children
       }
       return item
     })
   }
-  const getMenu=()=>{
+  const getMenu = () => {
     axios.get('http://localhost:8000/menuLists?_embed=children').then(res => {
       setdataSource(FilterMenu(res.data))
     })
@@ -25,40 +25,42 @@ export default function RightList() {
     getMenu()
   }, [])
 
-  const delectMethod=(item)=>{
-    console.log(item);
+  const delectMethod = async (item) => {
+    console.log(item, 29);
+    await axios.delete(`http://localhost:8000/menuLists/${item.id}`)
+    await getMenu()
     // 当前页面同步 后端删除数据
-    if (item.grade===1) {
-      setdataSource(dataSource.filter(data=>data.id!==item.id))
-      axios.delete(`http://localhost:8000/menuLists/${item.id}`)
-    }else{
-      let arr= dataSource.filter(data=>data.id===item.menuListId)
-      arr[0].children=arr[0].children.filter(data=>data.id!==item.id)
-      setdataSource([...dataSource])
-      axios.delete(`http://localhost:8000/children/${item.id}`)
-    }
+    // if (item.grade === 1) {
+    //   setdataSource(dataSource.filter(data => data.id !== item.id))
+    //   axios.delete(`http://localhost:8000/menuLists/${item.id}`)
+    // } else {
+    //   let arr = dataSource.filter(data => data.id === item.menuListId)
+    //   arr[0].children = arr[0].children.filter(data => data.id !== item.id)
+    //   setdataSource([...dataSource])
+    //   axios.delete(`http://localhost:8000/children/${item.id}`)
+    // }
   }
 
-  const confirmMethod=(item)=>{
+  const confirmMethod = (item) => {
     confirm({
-      title:'你确定要删除?',
-      icon:<ExclamationCircleOutlined />,
-      onOk(){
+      title: '你确定要删除?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
         console.log('ok');
         delectMethod(item)
       },
-      onCancel(){
+      onCancel() {
         console.log('Cancel');
       }
     })
   }
-  const changeSwitch=(item)=>{
-    item.pagepermisson=item.pagepermisson==1?0:1
+  const changeSwitch = (item) => {
+    item.pagepermisson = item.pagepermisson == 1 ? 0 : 1
     setdataSource([...dataSource])
-    let url=item.grade===1
-      ?`http://localhost:8000/menuLists/${item.id}`
-      :`http://localhost:8000/children/${item.id}`
-    axios.patch(url,{ pagepermisson:item.pagepermisson})
+    let url = item.grade === 1
+      ? `http://localhost:8000/menuLists/${item.id}`
+      : `http://localhost:8000/children/${item.id}`
+    axios.patch(url, { pagepermisson: item.pagepermisson })
   }
   const columns = [
     {
@@ -85,19 +87,19 @@ export default function RightList() {
       render: (item) => {
         return <div>
           <Popover
-            content={<div style={{textAlign:'center'}}>
-              <Switch checked={item.pagepermisson} onChange={()=>changeSwitch(item)}></Switch>
+            content={<div style={{ textAlign: 'center' }}>
+              <Switch checked={item.pagepermisson} onChange={() => changeSwitch(item)}></Switch>
             </div>}
             title="页面配置项"
-            trigger={item.pagepermisson==undefined?'':'click'}
+            trigger={item.pagepermisson == undefined ? '' : 'click'}
           >
-            <Button disabled={item.pagepermisson==undefined} icon={<EditOutlined />} shape="circle" type="primary"/>
+            <Button disabled={item.pagepermisson == undefined} icon={<EditOutlined />} shape="circle" type="primary" />
           </Popover>
           <Button
             icon={<DeleteOutlined />}
-            onClick={()=>{confirmMethod(item)}}
+            onClick={() => { confirmMethod(item) }}
             shape="circle"
-            style={{marginLeft:'10px'}}
+            style={{ marginLeft: '10px' }}
             type="primary"
           />
         </div>
