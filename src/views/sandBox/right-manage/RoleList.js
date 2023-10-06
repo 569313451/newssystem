@@ -9,6 +9,9 @@ import {
 const { confirm } = Modal;
 export default function RoleList() {
   const [form] = Form.useForm();
+  const [values, setValues] = useState({
+    label: '角色名称'
+  });
   const [dataSource, setdataSource] = useState([]);
   const [treeData, setTreeData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,10 +28,6 @@ export default function RoleList() {
   useEffect(() => {
     handleInit()
   }, []);
-  const handleAdd = () => {
-    // 添加
-    setIsModalOpen(true);
-  };
   const delectMethod = (item) => {
     console.log(item);
     // 当前页面同步 后端删除数据
@@ -49,6 +48,14 @@ export default function RoleList() {
     });
     console.log(item, 15);
   };
+  const handleAdd = () => {
+    setCurrentId(0);
+    setCheckedKeys([]);
+    setValues({
+      label: ''
+    })
+    setIsModalOpen(true);
+  };
   const editMethod = (item) => {
     setCheckedKeys(item.rights);
     setCurrentId(item.id);
@@ -61,11 +68,9 @@ export default function RoleList() {
       axios.post(`http://localhost:8000/roles`, {
         ...form.getFieldsValue(),
         rights: checkedKeys,
-      }).then((res) => {
-        if (res.status == 200) {
-          handleInit()
-          message.success('修改成功');
-        }
+      }).then(() => {
+        handleInit()
+        message.success('新增成功');
       })
     } else {
       // 更新
@@ -142,7 +147,7 @@ export default function RoleList() {
       <Modal
         onCancel={handleCancel}
         onOk={handleOk}
-        title="权限分配"
+        title="角色"
         visible={isModalOpen}
       >
         <Form
@@ -155,7 +160,11 @@ export default function RoleList() {
             name="label"
             rules={[{ required: true, message: '角色名称' }]}
           >
-            <Input placeholder="请填写角色名称" />
+            <Input
+              onChange={(e) => setValues({ ...values, label: e.target.value })}
+              placeholder="请填写角色名称"
+              value={values.label}
+            />
           </Form.Item>
         </Form>
         <Tree

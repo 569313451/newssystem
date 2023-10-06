@@ -42,11 +42,12 @@ function SideMenu() {
       setMenu(ResData)
     })
   }, [])
-  const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
+  const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : [{ role: { rights: [] } }];
+  const rights = token?.role?.rights || [];
   const checkPagePermission = (item) => {
     return rights.includes(item.key)
   }
-  const renderMenu = (menuList) => {
+  function renderMenu(menuList) {
     let arr = menuList.map(item => {
       if (item.pagepermisson === 1 && checkPagePermission(item)) {
         // 未使用的属性报错???==>过滤属性
@@ -76,7 +77,7 @@ function SideMenu() {
     <div>
       <Sider collapsed={false} collapsible trigger={null}>
         <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
-          <div className="logo" >发布管理</div>
+          <div className="logo" >cms</div>
           <div style={{ flex: 1, overflow: 'auto' }}>
             <Menu defaultOpenKeys={OpenKeys} items={menu} mode="inline"
               onClick={(item) => {

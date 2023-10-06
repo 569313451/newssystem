@@ -23,7 +23,9 @@ function TopHeader() {
       navigate('/login')
     }
   }
-  const { username, role: { label } } = JSON.parse(localStorage.getItem('token'))
+  const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : [];
+  const label = token?.role?.label || '';
+  const username = token?.username || '';
   const menu = (
     <Menu items={[
       {

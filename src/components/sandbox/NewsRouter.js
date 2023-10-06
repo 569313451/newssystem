@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+// import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Home from '../../views/sandBox/home/Home'
 import RightList from '../../views/sandBox/right-manage/RightList'
 import RoleList from '../../views/sandBox/right-manage/RoleList'
@@ -31,7 +32,8 @@ const LocalRouterMap = {
 
 export default function NewsRouter() {
   const [BackRouteList, setBackRouteList] = useState([])
-  const { role: { rights } } = JSON.parse(localStorage.getItem('token'))
+  const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : [{ role: { rights: [] } }];
+  const rights = token?.role?.rights || [];
   const checkRoute = (item) => {
     return LocalRouterMap[item.key] && item.pagepermisson
   }
